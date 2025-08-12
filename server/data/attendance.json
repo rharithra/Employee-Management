@@ -1,0 +1,60 @@
+[
+  {
+    "id": 1,
+    "employeeId": 1,
+    "date": "2025-08-11",
+    "checkIn": "09:48",
+    "status": "present",
+    "workingHours": 0
+  },
+  {
+    "id": 2,
+    "employeeId": 6,
+    "date": "2025-08-11",
+    "checkIn": "16:44",
+    "status": "present",
+    "workingHours": 0
+  },
+  {
+    "id": 3,
+    "employeeId": 8,
+    "date": "2025-08-12",
+    "checkIn": "16:00",
+    "status": "present",
+    "workingHours": 0
+  },
+  {
+    "id": 4,
+    "employeeId": 1,
+    "date": "2025-08-12",
+    "checkIn": "19:31",
+    "status": "present",
+    "workingHours": 0,
+    "checkOut": "19:31"
+  },
+  {
+    "id": 5,
+    "employeeId": 6,
+    "date": "2025-08-12",
+    "checkIn": "19:38",
+    "status": "present",
+    "workingHours": 0
+  },
+  {
+    "id": 6,
+    "employeeId": 5,
+    "date": "2025-08-12",
+    "checkIn": "19:40",
+    "status": "present",
+    "workingHours": 0
+  },
+  {
+    "id": 7,
+    "employeeId": 4,
+    "date": "2025-08-12",
+    "checkIn": "19:48",
+    "status": "present",
+    "workingHours": 1.5666666666666667,
+    "checkOut": "21:22"
+  }
+]

@@ -1,0 +1,352 @@
+[
+  {
+    "id": 1,
+    "recipientId": 2,
+    "type": "leave_request",
+    "message": "Employee User has applied for personal leave from 2025-08-18 to 2025-08-19 (2 days)",
+    "data": {
+      "leaveId": 5,
+      "employeeName": "Employee User",
+      "leaveType": "personal",
+      "startDate": "2025-08-18",
+      "endDate": "2025-08-19",
+      "duration": 2,
+      "reason": "Get Together"
+    },
+    "read": true,
+    "createdAt": "2025-08-11T06:59:26.341Z"
+  },
+  {
+    "id": 2,
+    "recipientId": 3,
+    "type": "leave_approved",
+    "message": "Your annual leave request from 2025-08-15 to 2025-08-17 has been approved by Manager User",
+    "data": {
+      "leaveId": 1,
+      "managerName": "Manager User",
+      "leaveType": "annual",
+      "startDate": "2025-08-15",
+      "endDate": "2025-08-17",
+      "duration": 3,
+      "status": "approved",
+      "rejectionReason": null
+    },
+    "read": true,
+    "createdAt": "2025-08-11T07:58:37.848Z"
+  },
+  {
+    "id": 3,
+    "recipientId": 3,
+    "type": "leave_approved",
+    "message": "Your personal leave request from 2025-08-18 to 2025-08-19 has been approved by Manager User",
+    "data": {
+      "leaveId": 5,
+      "managerName": "Manager User",
+      "leaveType": "personal",
+      "startDate": "2025-08-18",
+      "endDate": "2025-08-19",
+      "duration": 2,
+      "status": "approved",
+      "rejectionReason": null
+    },
+    "read": true,
+    "createdAt": "2025-08-11T08:18:04.359Z"
+  },
+  {
+    "id": 4,
+    "recipientId": "2",
+    "type": "leave_request",
+    "message": "Suba R has applied for annual leave from 2025-08-12 to 2025-08-13 (2 days)",
+    "data": {
+      "leaveId": 6,
+      "employeeName": "Suba R",
+      "leaveType": "annual",
+      "startDate": "2025-08-12",
+      "endDate": "2025-08-13",
+      "duration": 2,
+      "reason": "Family vacation"
+    },
+    "read": false,
+    "createdAt": "2025-08-11T08:58:17.725Z"
+  },
+  {
+    "id": 5,
+    "recipientId": 5,
+    "type": "leave_approved",
+    "message": "Your annual leave request from 2025-08-12 to 2025-08-13 has been approved by Admin User",
+    "data": {
+      "leaveId": 6,
+      "managerName": "Admin User",
+      "leaveType": "annual",
+      "startDate": "2025-08-12",
+      "endDate": "2025-08-13",
+      "duration": 2,
+      "status": "approved",
+      "rejectionReason": null
+    },
+    "read": true,
+    "createdAt": "2025-08-11T09:00:12.852Z"
+  },
+  {
+    "id": 6,
+    "recipientId": 1,
+    "type": "leave_approved",
+    "message": "Your annual leave request from 2025-08-25 to 2025-08-26 has been approved by Admin User",
+    "data": {
+      "leaveId": 7,
+      "managerName": "Admin User",
+      "leaveType": "annual",
+      "startDate": "2025-08-25",
+      "endDate": "2025-08-26",
+      "duration": 2,
+      "status": "approved",
+      "rejectionReason": null
+    },
+    "read": true,
+    "createdAt": "2025-08-11T11:47:30.462Z"
+  },
+  {
+    "id": 7,
+    "recipientId": 7,
+    "type": "leave_approved",
+    "message": "Your annual leave request from 2025-08-11 to 2025-08-12 has been approved by Admin User",
+    "data": {
+      "leaveId": 8,
+      "managerName": "Admin User",
+      "leaveType": "annual",
+      "startDate": "2025-08-11",
+      "endDate": "2025-08-12",
+      "duration": 2,
+      "status": "approved",
+      "rejectionReason": null
+    },
+    "read": false,
+    "createdAt": "2025-08-11T11:51:18.972Z"
+  },
+  {
+    "id": 8,
+    "recipientId": 7,
+    "type": "leave_approved",
+    "message": "Your annual leave request from 2025-08-11 to 2025-08-12 has been approved by Admin User",
+    "data": {
+      "leaveId": 8,
+      "managerName": "Admin User",
+      "leaveType": "annual",
+      "startDate": "2025-08-11",
+      "endDate": "2025-08-12",
+      "duration": 2,
+      "status": "approved",
+      "rejectionReason": null
+    },
+    "read": false,
+    "createdAt": "2025-08-11T11:51:21.068Z"
+  },
+  {
+    "id": 9,
+    "recipientId": 8,
+    "type": "leave_approved",
+    "message": "Your annual leave request from 2025-08-12 to 2025-08-13 has been approved by Admin User",
+    "data": {
+      "leaveId": 9,
+      "managerName": "Admin User",
+      "leaveType": "annual",
+      "startDate": "2025-08-12",
+      "endDate": "2025-08-13",
+      "duration": 2,
+      "status": "approved",
+      "rejectionReason": null
+    },
+    "read": true,
+    "createdAt": "2025-08-12T10:34:28.461Z"
+  },
+  {
+    "id": 10,
+    "recipientId": 8,
+    "type": "leave_approved",
+    "message": "Your personal leave request from 2025-08-14 to 2025-08-15 has been approved by Admin User",
+    "data": {
+      "leaveId": 10,
+      "managerName": "Admin User",
+      "leaveType": "personal",
+      "startDate": "2025-08-14",
+      "endDate": "2025-08-15",
+      "duration": 2,
+      "status": "approved",
+      "rejectionReason": null
+    },
+    "read": true,
+    "createdAt": "2025-08-12T11:03:00.557Z"
+  },
+  {
+    "id": 11,
+    "recipientId": "2",
+    "type": "leave_request",
+    "message": "Suba R has applied for annual leave from 2025-08-18 to 2025-08-19 (2 days)",
+    "data": {
+      "leaveId": 11,
+      "employeeName": "Suba R",
+      "leaveType": "annual",
+      "startDate": "2025-08-18",
+      "endDate": "2025-08-19",
+      "duration": 2,
+      "reason": "Personal Leave"
+    },
+    "read": false,
+    "createdAt": "2025-08-12T11:05:01.413Z"
+  },
+  {
+    "id": 12,
+    "recipientId": 5,
+    "type": "leave_approved",
+    "message": "Your annual leave request from 2025-08-18 to 2025-08-19 has been approved by Admin User",
+    "data": {
+      "leaveId": 11,
+      "managerName": "Admin User",
+      "leaveType": "annual",
+      "startDate": "2025-08-18",
+      "endDate": "2025-08-19",
+      "duration": 2,
+      "status": "approved",
+      "rejectionReason": null
+    },
+    "read": true,
+    "createdAt": "2025-08-12T11:06:00.828Z"
+  },
+  {
+    "id": 13,
+    "recipientId": "2",
+    "type": "leave_request",
+    "message": "Harithra R has applied for annual leave from 2025-08-18 to 2025-08-19 (2 days)",
+    "data": {
+      "leaveId": 12,
+      "employeeName": "Harithra R",
+      "leaveType": "annual",
+      "startDate": "2025-08-18",
+      "endDate": "2025-08-19",
+      "duration": 2,
+      "reason": "Family Vaccation"
+    },
+    "read": false,
+    "createdAt": "2025-08-12T11:16:37.249Z"
+  },
+  {
+    "id": 14,
+    "recipientId": 4,
+    "type": "leave_approved",
+    "message": "Your annual leave request from 2025-08-18 to 2025-08-19 has been approved by Admin User",
+    "data": {
+      "leaveId": 12,
+      "managerName": "Admin User",
+      "leaveType": "annual",
+      "startDate": "2025-08-18",
+      "endDate": "2025-08-19",
+      "duration": 2,
+      "status": "approved",
+      "rejectionReason": null
+    },
+    "read": true,
+    "createdAt": "2025-08-12T11:18:06.042Z"
+  },
+  {
+    "id": 15,
+    "recipientId": "2",
+    "type": "leave_request",
+    "message": "Suba R has applied for sick leave from 2025-08-20 to 2025-08-21 (2 days)",
+    "data": {
+      "leaveId": 13,
+      "employeeName": "Suba R",
+      "leaveType": "sick",
+      "startDate": "2025-08-20",
+      "endDate": "2025-08-21",
+      "duration": 2,
+      "reason": "Viral Fever"
+    },
+    "read": false,
+    "createdAt": "2025-08-12T11:19:20.775Z"
+  },
+  {
+    "id": 16,
+    "recipientId": 5,
+    "type": "leave_approved",
+    "message": "Your sick leave request from 2025-08-20 to 2025-08-21 has been approved by Admin User",
+    "data": {
+      "leaveId": 13,
+      "managerName": "Admin User",
+      "leaveType": "sick",
+      "startDate": "2025-08-20",
+      "endDate": "2025-08-21",
+      "duration": 2,
+      "status": "approved",
+      "rejectionReason": null
+    },
+    "read": true,
+    "createdAt": "2025-08-12T11:19:43.116Z"
+  },
+  {
+    "id": 17,
+    "recipientId": "4",
+    "type": "goal_assigned",
+    "message": "New goal assigned: \"Complete deliverables \" - Target date: undefined",
+    "data": {
+      "goalId": 4,
+      "type": "goal_assignment"
+    },
+    "read": false,
+    "createdAt": "2025-08-12T13:03:07.418Z"
+  },
+  {
+    "id": 18,
+    "recipientId": "5",
+    "type": "goal_assigned",
+    "message": "New goal assigned: \"Increase sales by 10%\" - Target date: undefined",
+    "data": {
+      "goalId": 5,
+      "type": "goal_assignment"
+    },
+    "read": false,
+    "createdAt": "2025-08-12T13:08:56.514Z"
+  },
+  {
+    "id": 19,
+    "recipientId": "6",
+    "type": "goal_assigned",
+    "message": "New goal assigned: \"Increase sales by 20%\" - Target date: undefined",
+    "data": {
+      "goalId": 6,
+      "type": "goal_assignment"
+    },
+    "read": false,
+    "createdAt": "2025-08-12T13:28:48.306Z"
+  },
+  {
+    "id": 20,
+    "recipientId": 1,
+    "type": "goal_completed",
+    "message": "Ravichandran N completed goal: \"Increase sales by 20%\"",
+    "data": {
+      "goalId": 6,
+      "employeeId": 6,
+      "type": "goal_completion"
+    },
+    "read": true,
+    "createdAt": "2025-08-12T13:31:14.917Z"
+  },
+  {
+    "id": 21,
+    "recipientId": 1,
+    "type": "leave_approved",
+    "message": "Your annual leave request from 2025-08-13 to 2025-08-13 has been approved by Admin User",
+    "data": {
+      "leaveId": 14,
+      "managerName": "Admin User",
+      "leaveType": "annual",
+      "startDate": "2025-08-13",
+      "endDate": "2025-08-13",
+      "duration": 1,
+      "status": "approved",
+      "rejectionReason": null
+    },
+    "read": true,
+    "createdAt": "2025-08-12T14:01:06.563Z"
+  }
+]
