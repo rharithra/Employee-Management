@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useQuery } from 'react-query';
-import axios from 'axios';
+import { api } from '../utils/api';
 import toast from 'react-hot-toast';
 
 const NewLeaveRequest = () => {
@@ -56,7 +56,7 @@ const NewLeaveRequest = () => {
         duration: diffDays
       };
 
-      await axios.post('/api/leaves', leaveData);
+      await api.post('/api/leaves', leaveData);
       toast.success('Leave request submitted successfully! Your manager will be notified.', {
         icon: '📧',
         duration: 5000
@@ -110,6 +110,7 @@ const NewLeaveRequest = () => {
               <input
                 type="date"
                 id="startDate"
+                min={new Date().toISOString().split('T')[0]}
                 {...register('startDate', { required: 'Start date is required' })}
                 className={`mt-1 input-field ${errors.startDate ? 'border-red-500' : ''}`}
               />
@@ -125,6 +126,7 @@ const NewLeaveRequest = () => {
               <input
                 type="date"
                 id="endDate"
+                min={startDate || new Date().toISOString().split('T')[0]}
                 {...register('endDate', { 
                   required: 'End date is required',
                   validate: value => {
@@ -153,6 +155,11 @@ const NewLeaveRequest = () => {
                   return `${diffDays} day(s)`;
                 })()}
               </p>
+              {startDate === endDate && (
+                <p className="text-xs text-blue-600 mt-1">
+                  ✅ Single day leave request
+                </p>
+              )}
             </div>
           )}
 

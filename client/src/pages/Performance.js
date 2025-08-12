@@ -13,6 +13,7 @@ import { useAuth } from '../contexts/AuthContext';
 import PerformanceReviewModal from '../components/PerformanceReviewModal';
 import GoalModal from '../components/GoalModal';
 import PromotionModal from '../components/PromotionModal';
+import EmployeeGoalModal from '../components/EmployeeGoalModal';
 
 const Performance = () => {
   const { user } = useAuth();
@@ -20,31 +21,39 @@ const Performance = () => {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showGoalModal, setShowGoalModal] = useState(false);
   const [showPromotionModal, setShowPromotionModal] = useState(false);
+  const [showEmployeeGoalModal, setShowEmployeeGoalModal] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [selectedGoal, setSelectedGoal] = useState(null);
 
   const { data: performanceStats } = useQuery('performanceStats', () =>
-    api.get('/api/performance/stats').then(res => res.data)
-  );
+    api.get('/api/performance/stats').then(res => res.data), {
+    onError: (error) => console.error('Failed to fetch performance stats:', error)
+  });
 
-  const { data: kpis } = useQuery('kpis', () =>
-    api.get('/api/kpis').then(res => res.data)
-  );
+  const { data: kpis = [] } = useQuery('kpis', () =>
+    api.get('/api/kpis').then(res => res.data), {
+    onError: (error) => console.error('Failed to fetch KPIs:', error)
+  });
 
-  const { data: goals } = useQuery('performanceGoals', () =>
-    api.get('/api/performance-goals').then(res => res.data)
-  );
+  const { data: goals = [] } = useQuery('performanceGoals', () =>
+    api.get('/api/performance-goals').then(res => res.data), {
+    onError: (error) => console.error('Failed to fetch goals:', error)
+  });
 
-  const { data: reviews } = useQuery('performanceReviews', () =>
-    api.get('/api/performance-reviews').then(res => res.data)
-  );
+  const { data: reviews = [] } = useQuery('performanceReviews', () =>
+    api.get('/api/performance-reviews').then(res => res.data), {
+    onError: (error) => console.error('Failed to fetch reviews:', error)
+  });
 
-  const { data: promotions } = useQuery('promotions', () =>
-    api.get('/api/promotions').then(res => res.data)
-  );
+  const { data: promotions = [] } = useQuery('promotions', () =>
+    api.get('/api/promotions').then(res => res.data), {
+    onError: (error) => console.error('Failed to fetch promotions:', error)
+  });
 
   const { data: usersData } = useQuery('users', () =>
-    api.get('/api/users').then(res => res.data)
-  );
+    api.get('/api/users').then(res => res.data), {
+    onError: (error) => console.error('Failed to fetch users:', error)
+  });
 
   const handleStartReview = (employee) => {
     setSelectedEmployee(employee);
@@ -196,7 +205,7 @@ const Performance = () => {
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Performance Reviews</h3>
                   <div className="space-y-3">
-                    {performanceStats?.recentReviews?.map((review) => (
+                    {(performanceStats?.recentReviews || []).map((review) => (
                       <div key={review.id} className="p-3 bg-white rounded border">
                         <div className="flex justify-between items-start">
                           <div>
@@ -222,7 +231,9 @@ const Performance = () => {
           {activeTab === 'goals' && (
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold text-gray-900">Performance Goals</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {user?.role === 'employee' ? 'My Performance Goals' : 'Performance Goals'}
+                </h3>
                 {(user?.role === 'admin' || user?.role === 'manager') && (
                   <button
                     onClick={handleAddGoal}
@@ -234,42 +245,108 @@ const Performance = () => {
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {goals?.map((goal) => (
-                  <div key={goal.id} className="bg-white p-4 rounded-lg shadow border">
-                    <div className="flex justify-between items-start mb-3">
-                      <h4 className="font-medium text-gray-900">{goal.title}</h4>
-                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(goal.status)}`}>
-                        {goal.status}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-600 mb-3">{goal.description}</p>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">Progress:</span>
-                        <span className="font-medium">
-                          {goal.currentValue}/{goal.targetValue} {goal.unit}
-                        </span>
+              {goals?.length === 0 ? (
+                <div className="text-center py-12 bg-gray-50 rounded-lg">
+                  <FlagIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    {user?.role === 'employee' ? 'No goals assigned yet' : 'No goals created yet'}
+                  </h3>
+                  <p className="text-gray-600">
+                    {user?.role === 'employee' 
+                      ? 'Your manager will assign performance goals to track your progress.'
+                      : 'Start by creating performance goals for your team members.'
+                    }
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {goals?.map((goal) => {
+                    const isOverdue = goal.targetDate && new Date(goal.targetDate) < new Date() && goal.status !== 'completed';
+                    
+                    return (
+                      <div key={goal.id} className="bg-white p-4 rounded-lg shadow border hover:shadow-md transition-shadow">
+                        <div className="flex justify-between items-start mb-3">
+                          <h4 className="font-medium text-gray-900 line-clamp-2">{goal.title}</h4>
+                          <div className="flex flex-col items-end space-y-1">
+                            <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(goal.status)}`}>
+                              {goal.status?.replace('_', ' ')}
+                            </span>
+                            {isOverdue && (
+                              <span className="px-2 py-1 text-xs font-semibold rounded-full text-red-600 bg-red-100">
+                                Overdue
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {goal.description && (
+                          <p className="text-sm text-gray-600 mb-3 line-clamp-2">{goal.description}</p>
+                        )}
+
+                        <div className="space-y-3">
+                          {/* Progress Bar */}
+                          <div>
+                            <div className="flex justify-between text-sm mb-1">
+                              <span className="text-gray-500">Progress:</span>
+                              <span className="font-medium">{goal.progress || 0}%</span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div 
+                                className={`h-2 rounded-full transition-all duration-300 ${
+                                  (goal.progress || 0) >= 100 ? 'bg-green-500' :
+                                  (goal.progress || 0) >= 75 ? 'bg-blue-500' :
+                                  (goal.progress || 0) >= 50 ? 'bg-yellow-500' :
+                                  'bg-red-500'
+                                }`}
+                                style={{ width: `${Math.min(goal.progress || 0, 100)}%` }}
+                              ></div>
+                            </div>
+                          </div>
+
+                          {/* Goal Details */}
+                          <div className="text-xs text-gray-500 space-y-1">
+                            {goal.category && (
+                              <div>Category: {goal.category}</div>
+                            )}
+                            {goal.targetDate && (
+                              <div className={isOverdue ? 'text-red-600 font-medium' : ''}>
+                                Due: {new Date(goal.targetDate).toLocaleDateString()}
+                              </div>
+                            )}
+                            {goal.employee && user?.role !== 'employee' && (
+                              <div>Assigned to: {goal.employee.firstName} {goal.employee.lastName}</div>
+                            )}
+                            {goal.setter && user?.role === 'employee' && (
+                              <div>Set by: {goal.setter.firstName} {goal.setter.lastName}</div>
+                            )}
+                          </div>
+
+                          {/* Priority Badge */}
+                          <div className="flex justify-between items-center">
+                            <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getPriorityColor(goal.priority)}`}>
+                              {goal.priority} priority
+                            </span>
+                            
+                            {/* Action Button */}
+                            {user?.role === 'employee' && goal.status !== 'completed' && (
+                              <button
+                                onClick={() => {
+                                  setSelectedGoal(goal);
+                                  setShowEmployeeGoalModal(true);
+                                }}
+                                className="text-blue-600 hover:text-blue-800 text-xs font-medium flex items-center space-x-1"
+                              >
+                                <EyeIcon className="h-3 w-3" />
+                                <span>Update Progress</span>
+                              </button>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-blue-600 h-2 rounded-full" 
-                          style={{ width: `${Math.min((goal.currentValue / goal.targetValue) * 100, 100)}%` }}
-                        ></div>
-                      </div>
-                      <div className="flex justify-between text-xs text-gray-500">
-                        <span>{goal.startDate}</span>
-                        <span>{goal.endDate}</span>
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getPriorityColor(goal.priority)}`}>
-                        {goal.priority} priority
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 
@@ -311,7 +388,7 @@ const Performance = () => {
                       <div>
                         <h5 className="font-medium text-gray-900 mb-2">Strengths</h5>
                         <ul className="text-sm text-gray-600 space-y-1">
-                          {review.strengths.map((strength, index) => (
+                          {(review.strengths || []).map((strength, index) => (
                             <li key={index} className="flex items-center">
                               <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
                               {strength}
@@ -322,7 +399,7 @@ const Performance = () => {
                       <div>
                         <h5 className="font-medium text-gray-900 mb-2">Areas for Improvement</h5>
                         <ul className="text-sm text-gray-600 space-y-1">
-                          {review.areasOfImprovement.map((area, index) => (
+                          {(review.areasOfImprovement || []).map((area, index) => (
                             <li key={index} className="flex items-center">
                               <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
                               {area}
@@ -408,6 +485,15 @@ const Performance = () => {
         isOpen={showPromotionModal}
         onClose={() => setShowPromotionModal(false)}
         users={usersData?.users || []}
+      />
+
+      <EmployeeGoalModal
+        isOpen={showEmployeeGoalModal}
+        onClose={() => {
+          setShowEmployeeGoalModal(false);
+          setSelectedGoal(null);
+        }}
+        goal={selectedGoal}
       />
     </div>
   );

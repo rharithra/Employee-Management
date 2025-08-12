@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { XMarkIcon, CurrencyDollarIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, CurrencyDollarIcon, InformationCircleIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { api } from '../utils/api';
 import toast from 'react-hot-toast';
+import KPIModal from './KPIModal';
 
 const SalaryModal = ({ isOpen, onClose, user, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,9 @@ const SalaryModal = ({ isOpen, onClose, user, onSuccess }) => {
     foodAllowance: user?.salary?.foodAllowance || 0,
     otherAllowances: user?.salary?.otherAllowances || 0
   });
+
+  const [showKPIModal, setShowKPIModal] = useState(false);
+  const [currentKPI, setCurrentKPI] = useState(user?.kpi || null);
 
   const queryClient = useQueryClient();
 
@@ -59,7 +63,11 @@ const SalaryModal = ({ isOpen, onClose, user, onSuccess }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateSalaryMutation.mutate(formData);
+    const dataToSubmit = {
+      ...formData,
+      ...(currentKPI ? { kpi: currentKPI } : {})
+    };
+    updateSalaryMutation.mutate(dataToSubmit);
   };
 
   const handleChange = (e) => {
@@ -68,6 +76,19 @@ const SalaryModal = ({ isOpen, onClose, user, onSuccess }) => {
       ...prev,
       [name]: parseFloat(value) || 0
     }));
+  };
+
+  const handleKPISave = (kpiResult) => {
+    setCurrentKPI(kpiResult);
+    setFormData(prev => ({
+      ...prev,
+      performanceIncentive: kpiResult.incentiveAmount
+    }));
+    toast.success('KPI calculated and applied to performance incentive!');
+  };
+
+  const openKPIModal = () => {
+    setShowKPIModal(true);
   };
 
   const calculateTotal = () => {
@@ -164,18 +185,47 @@ const SalaryModal = ({ isOpen, onClose, user, onSuccess }) => {
                 ['hra', 'da', 'ta', 'performanceIncentive', 'specialAllowance', 'medicalAllowance', 'conveyanceAllowance', 'foodAllowance', 'otherAllowances'].includes(key)
               ).map(([key, config]) => (
                 <div key={key}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {config.label}
+                  <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center justify-between">
+                    <span>{config.label}</span>
+                    {key === 'performanceIncentive' && (
+                      <button
+                        type="button"
+                        onClick={openKPIModal}
+                        className="ml-2 p-1 text-blue-600 hover:text-blue-800 hover:bg-blue-100 rounded-full transition-colors"
+                        title="Calculate KPI-based incentive"
+                      >
+                        <PlusIcon className="h-4 w-4" />
+                      </button>
+                    )}
                   </label>
-                  <input
-                    type="number"
-                    name={key}
-                    value={formData[key]}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                    placeholder="0"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">{config.description}</p>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      name={key}
+                      value={formData[key]}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="0"
+                      readOnly={key === 'performanceIncentive' && currentKPI}
+                    />
+                    {key === 'performanceIncentive' && currentKPI && (
+                      <div className="absolute right-2 top-2 text-xs text-green-600 bg-green-100 px-2 py-1 rounded">
+                        KPI: {currentKPI.totalKPI?.toFixed(1)}%
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-gray-500 mt-1">{config.description}</p>
+                    {key === 'performanceIncentive' && currentKPI && (
+                      <button
+                        type="button"
+                        onClick={openKPIModal}
+                        className="text-xs text-blue-600 hover:text-blue-800 mt-1"
+                      >
+                        View KPI Details
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -256,6 +306,14 @@ const SalaryModal = ({ isOpen, onClose, user, onSuccess }) => {
           </div>
         </form>
       </div>
+      
+      {/* KPI Modal */}
+      <KPIModal
+        isOpen={showKPIModal}
+        onClose={() => setShowKPIModal(false)}
+        onSave={handleKPISave}
+        currentKPI={currentKPI}
+      />
     </div>
   );
 };
