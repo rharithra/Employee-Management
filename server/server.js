@@ -11,7 +11,7 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CORS_ORIGIN || ['https://Employee-management-backend.onrender.com'],
+    origin: process.env.CORS_ORIGIN || ['https://employee-management-1-m8nh.onrender.com'],
     methods: ['GET', 'POST'],
     credentials: true
   }
